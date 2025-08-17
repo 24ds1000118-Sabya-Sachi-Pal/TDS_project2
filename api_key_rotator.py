@@ -4,9 +4,9 @@ import time
 import os
 
 # Read environment variable
-api_key1 = os.getenv("GENAI_API_KEY_1")
-api_key2 = os.getenv("GENAI_API_KEY_2")
-api_key3 = os.getenv("GENAI_API_KEY_3")
+api_key1 = os.getenv("GOOGLE_API_KEY")
+api_key2 = os.getenv("GOOGLE_API_KEY2")
+api_key3 = os.getenv("GOOGLE_API_KEY3")
 
 API_KEYS  = [
     {"key": "AIzaSyAH2Z2FYIZqVE0-ro--xsWk-ZaITgsRTz8", "req_timestamps": []}
