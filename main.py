@@ -34,7 +34,7 @@ async def serve_frontend():
     return HTMLResponse(content=html_content)
 
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = "/tmp/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Helper funtion to show last 25 words of string s
@@ -71,10 +71,11 @@ def strip_base64_from_json(data: dict) -> dict:
 
 
 # Pre-created venv paths (point to the python executable inside each venv)
+# In serverless environment, use the system python
 VENV_PATHS = [
-    "venv/bin/python3",
-    "venv1/bin/python3",
-    "venv2/bin/python3"
+    "python3",
+    "python",
+    "/usr/bin/python3"
 ]
 
 venv_cycle = itertools.cycle(VENV_PATHS)
