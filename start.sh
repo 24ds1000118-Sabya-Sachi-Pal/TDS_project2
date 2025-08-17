@@ -29,9 +29,24 @@ echo "Activating virtual environment..."
 # Activate venv depending on shell
 source venv/bin/activate
 
-# ngrok Auth Token
+# Load environment variables from .env file if it exists
+if [ -f ".env" ]; then
+    echo "Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# ngrok Auth Token - Set your token here directly if preferred
+NGROK_AUTHTOKEN="2xaVeC5JB9QFMCzCxFWBHDC9dEH_6qHUZjBznLkmhi3jLpWBy"  # Uncomment and add your token here
+
 if [ -z "$NGROK_AUTHTOKEN" ]; then
     read -p "Enter your ngrok authtoken: " NGROK_AUTHTOKEN
+    # Optionally save to .env file for next time
+    echo "Do you want to save this token to .env file for future use? (y/n)"
+    read -p "Save token? " save_token
+    if [ "$save_token" = "y" ] || [ "$save_token" = "Y" ]; then
+        echo "NGROK_AUTHTOKEN=$NGROK_AUTHTOKEN" > .env
+        echo "Token saved to .env file"
+    fi
 fi
 export NGROK_AUTHTOKEN=$NGROK_AUTHTOKEN
 
@@ -84,4 +99,4 @@ echo -e "\nServer should be ready now."
 
 # ================= START NGROK (FOREGROUND) =================
 echo "Starting ngrok tunnel on port 8000..."
-$NGROK_BIN http 8000
+$NGROK_BIN http --url=relaxed-correct-spaniel.ngrok-free.app 8000

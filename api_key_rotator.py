@@ -8,7 +8,11 @@ api_key1 = os.getenv("GENAI_API_KEY_1")
 api_key2 = os.getenv("GENAI_API_KEY_2")
 api_key3 = os.getenv("GENAI_API_KEY_3")
 
-API_KEYS  = []
+API_KEYS  = [
+    {"key": "AIzaSyAH2Z2FYIZqVE0-ro--xsWk-ZaITgsRTz8", "req_timestamps": []}
+    , {"key": "AIzaSyDMa4GL2TePNFVmlRRrz6XllQrjUloVCaA", "req_timestamps": []}
+    , {"key": "AIzaSyB6wM1kiHWuCx0qNd1r4PCgHkBYzWpn9WU", "req_timestamps": []}
+]
 
 for api_key in [api_key1, api_key2, api_key3]:
     if api_key:
