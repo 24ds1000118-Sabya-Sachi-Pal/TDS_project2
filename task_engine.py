@@ -28,7 +28,7 @@ async def run_python_code(code: str, libraries: List[str], folder: str = "upload
         with open(log_file_path, "a", encoding="utf-8") as log_file:
             log_file.write(f"\n[{timestamp}]\n{content}\n{'-'*40}\n")
 
-    # Step 1: Check & install required libraries in the selected venv
+    # Step 1: Check required libraries (skip installation in serverless environment)
     for lib in libraries:
         try:
             # check if already installed
@@ -40,14 +40,15 @@ async def run_python_code(code: str, libraries: List[str], folder: str = "upload
             ]
             result = subprocess.run(check_cmd)
             if result.returncode != 0:  # not installed
-                log_to_file(f"📦 Installing {lib} ...")
-                subprocess.check_call([python_exec, "-m", "pip", "install", lib])
+                # In serverless environment, we can't install packages dynamically
+                # Log the missing library but continue execution
+                log_to_file(f"⚠️ Library '{lib}' not available in serverless environment")
             else:
-                log_to_file(f"✅ {lib} already installed.")
+                log_to_file(f"✅ {lib} already available.")
         except Exception as install_error:
-            error_message = f"❌ Failed to install library '{lib}':\n{install_error}"
-            log_to_file(error_message)
-            return {"code": 0, "output": error_message}
+            # Don't fail completely if library check fails in serverless environment
+            log_to_file(f"⚠️ Could not check library '{lib}': {install_error}")
+            # Continue execution instead of returning error
 
     # Step 2: Run the code in the isolated venv
     try:
